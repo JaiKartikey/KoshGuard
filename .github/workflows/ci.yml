@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    env:
+      # Everything runs offline against the mock LLM: no secrets needed in CI.
+      LLM_MODE: mock
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Unit and integration tests
+        run: pytest
+
+      - name: Red-team gate (main suite)
+        # Fails the build if a change lets known attacks through or starts blocking benign queries.
+        run: python redteam/run_redteam.py --max-asr 0.05 --max-fpr 0.05
+
+      - name: Red-team held-out suite (informational)
+        run: python redteam/run_redteam.py --suite redteam/attacks_holdout.yaml
+
+      - name: Offline evals
+        run: python evals/run_evals.py
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-py${{ matrix.python-version }}
+          path: |
+            redteam/report*.md
+            redteam/results*.json
+            evals/report.md
