@@ -1,0 +1,20 @@
+# --- Core runtime ---------------------------------------------------------
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+pydantic-settings>=2.2
+langgraph>=0.2
+httpx>=0.27
+PyYAML>=6.0
+
+# --- UI -------------------------------------------------------------------
+streamlit>=1.35
+
+# --- Tests ----------------------------------------------------------------
+pytest>=8.0
+fakeredis[lua]>=2.23      # exercises the Redis backends without a Redis server
+
+# --- Optional integrations (enabled only when installed AND configured) ---
+# redis>=5.0              # set REDIS_URL to use Redis for rate limits / cache
+# langsmith>=0.1          # set LANGSMITH_API_KEY to export LangGraph traces
+# logfire>=0.40           # set LOGFIRE_TOKEN to export spans to Pydantic Logfire
