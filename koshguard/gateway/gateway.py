@@ -151,7 +151,14 @@ class LLMGateway:
         self._sleep = sleep
         self.breakers = {m: CircuitBreaker(breaker_threshold, breaker_reset, clock) for m in models}
 
-    def cost(self, model: str, prompt_tokens: int, completion_tokens: int) -> float:
+    def cost(self, response: LLMResponse) -> float:
+        # The offline mock is free; pricing it like the real model would
+        # produce made-up cost figures.
+        if response.provider == "mock":
+            return 0.0
+        return self.price(response.model, response.prompt_tokens, response.completion_tokens)
+
+    def price(self, model: str, prompt_tokens: int, completion_tokens: int) -> float:
         price_in, price_out = self.prices.get(model, (0.0, 0.0))
         return round((prompt_tokens * price_in + completion_tokens * price_out) / 1_000_000, 8)
 
@@ -209,7 +216,7 @@ class LLMGateway:
                     self.cache.set(key, resp.__dict__)  # type: ignore[union-attr]
                 return GatewayResult(
                     response=resp,
-                    cost_usd=self.cost(resp.model, resp.prompt_tokens, resp.completion_tokens),
+                    cost_usd=self.cost(resp),
                     cached=False,
                     attempts=attempts,
                     fallback_used=index > 0,

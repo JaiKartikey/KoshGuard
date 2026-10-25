@@ -47,7 +47,8 @@ def test_happy_path_returns_grounded_text_and_cost():
     gw, _, _ = make_gateway(MockProvider())
     res = gw.complete("u1", PROMPT)
     assert "0.50 percent" in res.response.text and res.response.model == PRIMARY
-    assert res.cost_usd > 0 and not res.cached and res.attempts == 1
+    assert res.cost_usd == 0 and not res.cached and res.attempts == 1  # mock calls are free
+    assert gw.price(PRIMARY, 1_000_000, 1_000_000) == 3.0  # $1 in + $2 out per 1M tokens
 
 
 def test_retries_transient_failures_with_backoff():
