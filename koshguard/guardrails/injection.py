@@ -82,7 +82,19 @@ _RULES: tuple[_Rule, ...] = (
     _r("bulk_customer_data", "pii_harvest", 0.75,
        r"\b(list|show|give|dump|export|reveal|tell me)\b.{0,40}\b(all|every|other|another|any)\b.{0,30}\b(customers?|users?|clients?|account ?holders?)\b.{0,40}\b(data|details|aadhaar|pan|accounts?|numbers?|balances?|records?|info(rmation)?)\b"),
     _r("someone_elses", "pii_harvest", 0.65,
-       r"\b(aadhaar|pan|account|card|mobile|phone|balance|address|kyc)\b.{0,30}\b(of|for|belonging to)\b\s+(my )?(friend|neighbou?r|wife|husband|boss|colleague|customer|someone|mr\.?|mrs\.?|ms\.?|another person)\b"),
+       r"\b(aadhaar|pan|account|card|mobile|phone|balance|address|kyc)\b.{0,30}\b(of|for|belonging to)\b\s+((my|the|a|that|this|another)\s+)?(friend|neighbou?r|wife|husband|boss|colleague|customer|user|someone|person|account ?holder|mr\.?|mrs\.?|ms\.?)\b"),
+    # --- Requests for confidential bank internals ---------------------------
+    _r("internal_info", "sensitive_internal", 0.6,
+       r"\b(internal|confidential|secret|hidden|private)\b.{0,30}\b(fraud|thresholds?|rules?|codes?|systems?|procedures?|configuration|data|limits?|algorithms?)\b"),
+    # --- Fraud / abuse intent ----------------------------------------------
+    _r("bypass_control", "fraud_intent", 0.6,
+       r"\b(bypass|get around|circumvent|defeat|evade|trick|fool|hack|skip)\b.{0,30}\b(otp|kyc|limits?|verification|fraud|pin|2fa|authentication|checks?)\b"),
+    _r("others_money", "fraud_intent", 0.6,
+       r"\b(someone else'?s|somebody else'?s|another person'?s|other people'?s|a stranger'?s)\b.{0,20}\b(account|card|payment|otp|money|upi|transaction)"),
+    _r("use_blocked_card", "fraud_intent", 0.6,
+       r"\b(withdraw|use|spend|reactivate)\b.{0,30}\b(blocked|stolen|frozen|cloned)\s+(debit |credit )?(card|account)"),
+    _r("scam_script", "fraud_intent", 0.7,
+       r"\b(scam(mer)?|phishing|vishing)\b.{0,40}\b(script|message|call|sms|email)\b|\bget (a|the) (customer|victim|user)'?s?\b.{0,15}\b(otp|pin|cvv|password)\b"),
     # --- Encoding tricks ---------------------------------------------------
     _r("decode_and_follow", "encoding", 0.6,
        r"\b(decode|decrypt|translate|deobfuscate|reverse)\b.{0,40}\b(base64|rot13|hex|binary|cipher|this)\b.{0,60}\b(follow|execute|obey|do|run|then)\b"),

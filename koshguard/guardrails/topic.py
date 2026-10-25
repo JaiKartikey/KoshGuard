@@ -42,7 +42,7 @@ _INVESTMENT_ADVICE = re.compile(
 
 _LEGAL_ADVICE = re.compile(
     r"\b(sue|lawsuit|legal (advice|action|notice)|file a case|court case|lawyer|advocate|"
-    r"how (do|can) i (avoid|evade) tax|tax evasion|loophole)\b",
+    r"(avoid|evade|dodge) (paying )?(any )?tax(es)?|tax evasion|loopholes?)\b",
     re.IGNORECASE,
 )
 
@@ -50,7 +50,7 @@ _LEGAL_ADVICE = re.compile(
 # ("write a poem about my savings account" is still not a support request).
 _GENERAL_TASK = re.compile(
     r"\b(poem|poetry|song|lyrics|joke|essay|recipe|limerick|rap|haiku|"
-    r"write (me )?(a|some) (code|program|script|function)|python code|homework)\b",
+    r"write (me )?(a|an|some)( \w+)? (code|program|script|function|app|bot)|python code|homework)\b",
     re.IGNORECASE,
 )
 
