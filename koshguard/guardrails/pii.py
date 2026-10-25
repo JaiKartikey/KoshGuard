@@ -172,7 +172,7 @@ DEFAULT_RESTORABLE: frozenset[str] = frozenset({"EMAIL", "UPI", "IFSC"})
 def _normalise(pii_type: str, value: str) -> str:
     if pii_type in {"EMAIL", "UPI", "PAN", "IFSC"}:
         return value.upper()
-    return re.sub(r"\D", "", value)[-12:] if pii_type == "MOBILE" else re.sub(r"\D", "", value)
+    return re.sub(r"\D", "", value)[-10:] if pii_type == "MOBILE" else re.sub(r"\D", "", value)
 
 
 @dataclass
