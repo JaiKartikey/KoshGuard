@@ -6,6 +6,7 @@ all go through this one class, so they exercise exactly the same code path.
 
 from __future__ import annotations
 
+import re
 import secrets
 import time
 from dataclasses import asdict, dataclass, field
@@ -109,7 +110,11 @@ class KoshGuard:
             "output_failures": ov.failures if ov else [],
             "grounding_score": ov.grounding_score if ov else None,
         }
-        sources = list(dict.fromkeys(c.chunk.source for c in state.get("chunks", []))) if state.get("outcome") == "answered" else []
+        sources: list[str] = []
+        if state.get("outcome") == "answered":
+            retrieved = list(dict.fromkeys(c.chunk.source for c in state.get("chunks", [])))
+            cited = [s for s in re.findall(r"\[([\w.-]+\.md)\]", state["answer"]) if s in retrieved]
+            sources = list(dict.fromkeys(cited)) or retrieved
         result = ChatResult(
             request_id=trace.request_id,
             answer=state["answer"],

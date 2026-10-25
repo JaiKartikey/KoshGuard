@@ -151,7 +151,9 @@ class MockProvider:
                     candidates.append((overlap, -(i * 1000 + j), sentence, block["source"]))
         if not candidates:
             return "I'm sorry, I don't have that information in KoshBank's policy documents."
-        best = sorted(candidates, reverse=True)[:2]
+        ranked = sorted(candidates, reverse=True)
+        # Add a second sentence only if it is nearly as relevant as the first.
+        best = [ranked[0]] + [c for c in ranked[1:2] if c[0] >= max(2, ranked[0][0] - 1)]
         best.sort(key=lambda c: -c[1])  # restore document order
         sources = list(dict.fromkeys(c[3] for c in best))
         return " ".join(c[2] for c in best) + " " + " ".join(f"[{s}]" for s in sources)
