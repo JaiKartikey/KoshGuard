@@ -53,8 +53,17 @@ _ACTION_REQUEST = re.compile(
 _ACTION_NAMES = re.compile(_ACTION_VERBS, re.IGNORECASE)
 
 
+# Questions about *how* something works are FAQs even when they contain an
+# action verb ("how often do I need to update my KYC?"), unless they ask the
+# assistant itself to act ("can you block my card?").
+_QUESTION = re.compile(r"^\s*(how|what|when|where|why|which|who|is|are|do|does|did|can i|could i|should i|am i|will i)\b", re.I)
+_ASKS_ASSISTANT = re.compile(r"\b(can|could|would|will) you\b", re.I)
+
+
 def classify_intent(text: str) -> tuple[str, str | None]:
     """Return (intent, action) where intent is action | faq."""
+    if _QUESTION.search(text) and not _ASKS_ASSISTANT.search(text):
+        return "faq", None
     if _ACTION_REQUEST.search(text):
         verb = _ACTION_NAMES.search(_ACTION_REQUEST.search(text).group(0))  # type: ignore[union-attr]
         return "action", verb.group(0).lower() if verb else "account_change"

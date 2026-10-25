@@ -118,3 +118,8 @@ def test_masked_pii_in_answer(settings):
     kg = KoshGuard(settings, provider=LeakyProvider("Customers aged 60 years with card <CARD_1> get 0.50 percent [fixed_deposits.md]"))
     r = kg.chat("u1", "Senior citizen FD rate for my card 4111111111111111?")
     assert "XXXX1111" in r.answer and "4111111111111111" not in r.answer
+
+
+def test_question_with_action_verb_is_faq():
+    assert classify_intent("How often do I need to update my KYC?")[0] == "faq"
+    assert classify_intent("What happens if I want to close my FD early?")[0] == "faq"
