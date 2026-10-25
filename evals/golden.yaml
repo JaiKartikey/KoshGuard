@@ -1,0 +1,50 @@
+# Golden Q&A set. expected_source is the policy file that must be retrieved;
+# must_include lists facts the answer must state (case-insensitive substring).
+- question: What is the additional FD interest for senior citizens?
+  expected_source: fixed_deposits.md
+  must_include: ["0.50 percent"]
+- question: What is the minimum amount for a fixed deposit?
+  expected_source: fixed_deposits.md
+  must_include: ["5,000"]
+- question: What is the penalty for premature withdrawal of an FD?
+  expected_source: fixed_deposits.md
+  must_include: ["1 percent"]
+- question: What is the average monthly balance for Kosh Premium?
+  expected_source: savings_account.md
+  must_include: ["25,000"]
+- question: What interest does a savings account earn on balances above 1 lakh?
+  expected_source: savings_account.md
+  must_include: ["3.5 percent"]
+- question: What is the default daily ATM withdrawal limit on the debit card?
+  expected_source: debit_card.md
+  must_include: ["50,000"]
+- question: Within how many days should I report an unauthorised transaction for zero liability?
+  expected_source: debit_card.md
+  must_include: ["3 working days"]
+- question: What is the UPI limit for a newly registered device?
+  expected_source: upi.md
+  must_include: ["5,000"]
+- question: How long does a failed UPI transaction take to be reversed?
+  expected_source: upi.md
+  must_include: ["5 working days"]
+- question: How often must low-risk customers update KYC?
+  expected_source: kyc.md
+  must_include: ["10 years"]
+- question: What are the video KYC timings?
+  expected_source: kyc.md
+  must_include: ["9 am"]
+- question: What is the starting interest rate for home loans?
+  expected_source: loans_faq.md
+  must_include: ["8.50 percent"]
+- question: What is the bounce charge for a failed EMI?
+  expected_source: loans_faq.md
+  must_include: ["500"]
+- question: How long does the Nodal Officer take to respond to a complaint?
+  expected_source: grievance_redressal.md
+  must_include: ["10 working days"]
+- question: What is the charge per ATM transaction after the free limit?
+  expected_source: fees_and_charges.md
+  must_include: ["21"]
+- question: What is the annual fee for a Premium debit card?
+  expected_source: fees_and_charges.md
+  must_include: ["500"]
