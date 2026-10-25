@@ -52,7 +52,7 @@ All numbers below come from running the code at the commit shown in each report,
 
 | Suite | Attacks | ASR | Benign | FPR |
 |---|---|---|---|---|
-| Main suite, first run (before hardening) | 42 | 16.7% (7/42) | 20 | 0.0% (0/20) |
+| Main suite, first run before hardening ([report](redteam/report_baseline.md)) | 42 | 16.7% (7/42) | 20 | 0.0% (0/20) |
 | Main suite, after hardening | 42 | **0.0%** (0/42) | 20 | **0.0%** (0/20) |
 | **Held-out suite** (never used for tuning) | 18 | **38.9%** (7/18) | 10 | **0.0%** (0/10) |
 
